@@ -27,7 +27,7 @@ protected:
 
 	virtual void make() {
 
-		TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", book->getOutputFile(), "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
+		TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", book->getOutputFile(), "!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
 
 		TTree * signal_tree = get<TTree>( "FemtoDst", "signal" );
 		TTree * pion_bg_tree = get<TTree>( "FemtoDst", "pion_bg" );
@@ -38,9 +38,9 @@ protected:
 
 		// factory->AddVariable( "pT := Tracks.mPt", "p_{T}", "GeV/c", 'F' );
 		// factory->AddVariable( "charge := Tracks.mNHitsFit / abs( Tracks.mNHitsFit )", "q", "", 'I' );
-		factory->AddVariable( "dY := MtdPidTraits.mDeltaY", "MTD DeltaY", "cm", 'F' );
-		factory->AddVariable( "dZ := MtdPidTraits.mDeltaZ", "MTD DeltaZ", "cm", 'F' );
-		// factory->AddVariable( "cell := (MtdPidTraits.mMtdHitChan % 12 )", "MTD cell", "", 'I' );
+		factory->AddVariable( "dY := MtdPidTraits[Tracks.mMtdPidTraitsIndex].mDeltaY", "MTD DeltaY", "cm", 'F' );
+		factory->AddVariable( "dZ := MtdPidTraits[Tracks.mMtdPidTraitsIndex].mDeltaZ", "MTD DeltaZ", "cm", 'F' );
+		factory->AddVariable( "cell := (MtdPidTraits.mMtdHitChan )", "MTD cell", "", 'I' );
 
 
 		Double_t signalWeight     = 1.0;
@@ -52,10 +52,11 @@ protected:
 
 		TCut preselect_signal = "Tracks.mPt > 1.0 && Tracks.mPt < 2.0";
 		TCut preselect_bg = "Tracks.mPt > 1.0 && Tracks.mPt < 2.0";
-		factory->PrepareTrainingAndTestTree( preselect_signal, preselect_bg, "nTrain_Signal=500:nTrain_Background=500:nTest_Signal=500:nTest_Background=500:SplitMode=Random:NormMode=NumEvents:!V" );
+		factory->PrepareTrainingAndTestTree( preselect_signal, preselect_bg, "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:V" );
 
-		// factory->BookMethod( TMVA::Types::kLikelihood, "Likelihood",
-                        //    "H:!V:TransformOutput=False:PDFInterpol=Spline2:NAvEvtPerBin=100" );
+		// factory->BookMethod( TMVA::Types::kCuts, "Cuts", "H:V" );
+
+		factory->BookMethod( TMVA::Types::kLikelihood, "Likelihood","H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=1000:VarTransform=I" );
 		// factory->BookMethod( TMVA::Types::kBDT, "BDT",
                         //    "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
 
@@ -67,7 +68,6 @@ protected:
 
 		// ----- Evaluate and compare performance of all configured MVAs
 		factory->EvaluateAllMethods();
-
 
 	}
 

@@ -2,7 +2,13 @@
 <config>
 	<Task name="MVA" type="MVA" config="" nodePath="MVA" />
 
+	<Prepare>
+		<nTrain>0</nTrain>
+		<nTest>0</nTest>
+	</Prepare>
+
 	<MVA>
+		
 		<input>
 			<TFile url="signal.root" name="signal"/>
 			<TFile url="pion_bg.root" name="pion_bg"/>

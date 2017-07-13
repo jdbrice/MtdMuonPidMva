@@ -5,7 +5,12 @@
 	<Prepare>
 		<nTrain>0</nTrain>
 		<nTest>0</nTest>
+		<opts>nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents</opts>
 	</Prepare>
+
+	<Methods>
+		<Likelihood opts="H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=500:VarTransform=I"/>
+	</Methods>
 
 	<MVA>
 		

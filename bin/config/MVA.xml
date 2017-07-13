@@ -2,9 +2,7 @@
 <config>
 	<Task name="MVA" type="MVA" config="" nodePath="MVA" />
 
-	<Prepare>
-		<nTrain>0</nTrain>
-		<nTest>0</nTest>
+	<Prepare cuts="McTracks_mPt<5.0" >
 		<opts>nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents</opts>
 	</Prepare>
 

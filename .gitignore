@@ -47,3 +47,4 @@ modules/PicoDstP16id/DictionaryPicoDstP16id\.cpp
 modules/PicoDstP16id/DictionaryPicoDstP16id\.h
 
 *.vscode
+*.pdf

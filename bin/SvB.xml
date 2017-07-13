@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <Data name="d" url="mva.root"/>
+
+    <TFile url="plots.root" />
+    <Transform>
+        <Add save_as="hsum" nameA="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high" nameB="d/Method_Likelihood/Likelihood/MVA_Likelihood_B_high" />
+    </Transform>
+    <Transform>
+        <Divide save_as="Purity" nameA="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high" nameB="hsum"/>
+    </Transform>
+
+    <Margins>0.02, 0.01, 0.12, 0.1</Margins>
+
+    <Plot>
+        <TLatex text="Method: Likelihood Ratios" x="0.15" y="0.91" size="0.05"/>
+        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high">
+            <style draw="h" lc="blue" lw="2" xr="-0.5, 0.5" logy="1" yr="1e-3, 10" title=";Likelihood" optstat="0"/>
+        </Histo>
+
+        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_B_high">
+            <style draw="h same" lc="red" lw="2"/>
+        </Histo>
+
+        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effS">
+            <style draw="h same" lc="blue" linestyle="2" lw="2"/>
+        </Histo>
+
+        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effB">
+            <style draw="h same" lc="red" linestyle="2" lw="2"/>
+        </Histo>
+
+        <Histo name="Purity">
+            <style draw="h same" lc="black" lw="2" />
+        </Histo>
+
+        <Legend>
+            <Position pos="bottom hcenter" w="0.3"/>
+            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high" title="Signal"/>
+            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_B_high" title="Background"/>
+            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effS" title="Signal Efficiency"/>
+            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effB" title="Background Efficiency"/>
+            <Entry name="Purity" title="Signal Purity"/>
+            
+        </Legend>
+
+        <Export url="L_SvsB.pdf"/>
+    </Plot>
+
+</root>

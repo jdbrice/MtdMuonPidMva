@@ -2,31 +2,39 @@
 <root>
     <Data name="d" url="mva.root"/>
 
+    <Method>Likelihood</Method>
+
+    <LS>d/Method_{Method}/{Method}/MVA_{Method}_S_high</LS>
+    <LB>d/Method_{Method}/{Method}/MVA_{Method}_B_high</LB>
+
+    <EffS>d/Method_{Method}/{Method}/MVA_{Method}_effS</EffS>
+    <EffB>d/Method_{Method}/{Method}/MVA_{Method}_effB</EffB>
+
     <TFile url="plots.root" />
     <Transform>
-        <Add save_as="hsum" nameA="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high" nameB="d/Method_Likelihood/Likelihood/MVA_Likelihood_B_high" />
+        <Add save_as="hsum" nameA="{LS}" nameB="{LB}" />
     </Transform>
     <Transform>
-        <Divide save_as="Purity" nameA="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high" nameB="hsum"/>
+        <Divide save_as="Purity" nameA="{LS}" nameB="hsum"/>
     </Transform>
 
     <Margins>0.02, 0.01, 0.12, 0.1</Margins>
 
     <Plot>
-        <TLatex text="Method: Likelihood Ratios" x="0.15" y="0.91" size="0.05"/>
-        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high">
-            <style draw="h" lc="blue" lw="2" xr="-0.5, 0.5" logy="1" yr="1e-3, 10" title=";Likelihood" optstat="0"/>
+        <TLatex text="Method: {Method}" x="0.15" y="0.91" size="0.05"/>
+        <Histo name="{LS}">
+            <style draw="h" lc="blue" lw="2" xr="0.4, 2.5" logy="1" yr="1e-2, 10" title=";Likelihood" optstat="0"/>
         </Histo>
 
-        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_B_high">
+        <Histo name="{LB}">
             <style draw="h same" lc="red" lw="2"/>
         </Histo>
 
-        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effS">
+        <Histo name="{EffS}">
             <style draw="h same" lc="blue" linestyle="2" lw="2"/>
         </Histo>
 
-        <Histo name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effB">
+        <Histo name="{EffB}">
             <style draw="h same" lc="red" linestyle="2" lw="2"/>
         </Histo>
 
@@ -36,15 +44,19 @@
 
         <Legend>
             <Position pos="bottom hcenter" w="0.3"/>
-            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_S_high" title="Signal"/>
-            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_B_high" title="Background"/>
-            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effS" title="Signal Efficiency"/>
-            <Entry name="d/Method_Likelihood/Likelihood/MVA_Likelihood_effB" title="Background Efficiency"/>
-            <Entry name="Purity" title="Signal Purity"/>
+            <Entry name="{LS}" title="Signal"/>
+            <Entry name="{LB}" title="Background"/>
+            <Entry name="{EffS}" title="Signal Efficiency"/>
+            <Entry name="{EffB}" title="Background Efficiency"/>
+            <Entry name="Purity" title="Signal Purity (60%, 80%, 100%)"/>
             
         </Legend>
 
-        <Export url="L_SvsB.pdf"/>
+        <TLine x="0.4, 1" y="1.0, 1.0" color="#000000"/>
+        <TLine x="0.4, 1" y="0.8, 0.8" color="#000000"/>
+        <TLine x="0.4, 1" y="0.6, 0.6" color="#000000"/>
+
+        <Export url="plot_{Method}_SvsB.pdf"/>
     </Plot>
 
 </root>

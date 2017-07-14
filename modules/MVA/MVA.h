@@ -37,18 +37,26 @@ protected:
 
 
 		// factory->AddVariable( "pT := Tracks.mPt", "p_{T}", "GeV/c", 'F' );
-		// factory->AddVariable( "charge := Tracks.mNHitsFit / abs( Tracks.mNHitsFit )", "q", "", 'I' );
+		
 		// factory->AddVariable( "dY := MtdPidTraits[Tracks.mMtdPidTraitsIndex].mDeltaY", "MTD DeltaY", "cm", 'F' );
 		// factory->AddVariable( "dZ := MtdPidTraits[Tracks.mMtdPidTraitsIndex].mDeltaZ", "MTD DeltaZ", "cm", 'F' );
 		// factory->AddVariable( "cell := (MtdPidTraits_mMtdHitChan )", "MTD cell", "", 'I' );
 		
-		factory->AddVariable( "dY := ((65.0+Tracks_mCharge*MtdPidTraits_mDeltaY) + 130 * (MtdPidTraits_mCell))", "MTD DeltaY", "cm", 'F' );
-		factory->AddVariable( "dZ := (100.0+MtdPidTraits_mDeltaZ) + 200 * (MtdPidTraits_mCell)", "MTD DeltaZ", "cm", 'F' );
+		// factory->AddVariable( "dY := ((65.0+Tracks_mCharge*MtdPidTraits_mDeltaY) + 130 * (MtdPidTraits_mCell))", "MTD DeltaY", "cm", 'F' );
+		// factory->AddVariable( "dZ := (100.0+MtdPidTraits_mDeltaZ) + 200 * (MtdPidTraits_mCell)", "MTD DeltaZ", "cm", 'F' );
+
+		factory->AddVariable( "dY := MtdPidTraits_mDeltaY", "MTD DeltaY", "cm", 'F' );
+		factory->AddVariable( "dZ := MtdPidTraits_mDeltaZ", "MTD DeltaZ", "cm", 'F' );
+		// factory->AddVariable( "charge := Tracks_mCharge", "q", "", 'I' );
+		
+
+		// factory->AddVariable( "dY := ((65.0+Tracks_mCharge*MtdPidTraits_mDeltaY) + 130 * (MtdPidTraits_mCell))", "MTD DeltaY", "cm", 'F' );
+		// factory->AddVariable( "dZ := (100.0+MtdPidTraits_mDeltaZ) + 200 * (MtdPidTraits_mCell)", "MTD DeltaZ", "cm", 'F' );
 		factory->AddVariable( "nh := Tracks_mNHitsFit", "N Hits Fit", "", 'I' );
 		factory->AddVariable( "dca := Tracks_mDCA", "DCA", "cm", 'F' );
-		// factory->AddVariable( "dZ := MtdPidTraits_mDeltaZ", "MTD DeltaZ", "cm", 'F' );
+
 		// factory->AddVariable( "Cell := MtdPidTraits_mCell", "MTD Cell", "", 'I' );
-		// factory->AddVariable( "Module := MtdPidTraits_mDeltaZ", "MTD Module", "", 'I' );
+		// factory->AddVariable( "Module := MtdPidTraits_mModule", "MTD Module", "", 'I' );
 		// factory->AddVariable( "BL := MtdPidTraits_mBL", "MTD BL", "", 'I' );
 		
 
@@ -67,12 +75,15 @@ protected:
 		LOG_F( INFO, "Pre Cuts(\"%s\")", config.get<TString>( "Prepare:cuts", "" ).Data() );
 		factory->PrepareTrainingAndTestTree( precuts, preopts );
 
-		if ( config.exists( "Methods.Likelihood" ) ){
+		if ( config.getBool( "Methods.Likelihood:enable", true ) ){
 			LOG_F( INFO, "Likelihood(\"%s\") ", config.get<TString>( "Methods.Likelihood:opts" ).Data() );
 			factory->BookMethod( TMVA::Types::kLikelihood, "Likelihood", config.get<TString>( "Methods.Likelihood:opts" ) );
 		}
 
-		factory->BookMethod( TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
+		if ( config.getBool( "Methods.MLP:enable", true ) ){
+			LOG_F( INFO, "MLP(\"%s\") ", config.get<TString>( "Methods.MLP:opts" ).Data() );
+			factory->BookMethod( TMVA::Types::kMLP, "MLP", config.get<TString>( "Methods.MLP:opts" ) );
+		}
 
 		// Train MVAs using the set of training events
 		factory->TrainAllMethods();

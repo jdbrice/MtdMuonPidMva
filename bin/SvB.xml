@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
-    <Data name="d" url="mva.root"/>
+    <mod></mod>
+    <Data name="d" url="mva{mod}.root"/>
 
     <Method>Likelihood</Method>
 
@@ -10,20 +11,30 @@
     <EffS>d/Method_{Method}/{Method}/MVA_{Method}_effS</EffS>
     <EffB>d/Method_{Method}/{Method}/MVA_{Method}_effB</EffB>
 
+    <rejB>d/Method_{Method}/{Method}/MVA_{Method}_rejBvsS</rejB>
+
     <TFile url="plots.root" />
     <Transform>
-        <Add save_as="hsum" nameA="{LS}" nameB="{LB}" />
+        <CDF save_as="cdfS" name="{LS}" forward="false"/>
+        <CDF save_as="cdfB" name="{LB}" forward="false"/>
     </Transform>
     <Transform>
-        <Divide save_as="Purity" nameA="{LS}" nameB="hsum"/>
+        <Add save_as="cdfSum" nameA="cdfS" nameB="cdfB" />
+    </Transform>
+    <Transform>
+        <Divide save_as="Purity" nameA="cdfS" nameB="cdfSum"/>
     </Transform>
 
     <Margins>0.02, 0.01, 0.12, 0.1</Margins>
 
+    <XRange>
+        <BDT>-2, 2</BDT>
+    </XRange>
+
     <Plot>
         <TLatex text="Method: {Method}" x="0.15" y="0.91" size="0.05"/>
         <Histo name="{LS}">
-            <style draw="h" lc="blue" lw="2" xr="0.4, 2.5" logy="1" yr="1e-2, 10" title=";Likelihood" optstat="0"/>
+            <style draw="h" lc="blue" lw="2" xr="-10.0, 10.3" logy="1" yr="1e-2, 15" title=";Likelihood" optstat="0"/>
         </Histo>
 
         <Histo name="{LB}">
@@ -52,11 +63,45 @@
             
         </Legend>
 
-        <TLine x="0.4, 1" y="1.0, 1.0" color="#000000"/>
-        <TLine x="0.4, 1" y="0.8, 0.8" color="#000000"/>
-        <TLine x="0.4, 1" y="0.6, 0.6" color="#000000"/>
+        <TLine x="-0.0, 1" y="1.0, 1.0" color="#000000"/>
+        <TLine x="-0.0, 1" y="0.9, 0.9" color="#000000"/>
+        <TLine x="-0.0, 1" y="0.8, 0.8" color="#000000"/>
+        <TLine x="-0.0, 1" y="0.7, 0.7" color="#000000"/>
+        <TLine x="-0.0, 1" y="0.6, 0.6" color="#000000"/>
+        <TLine x="-0.0, 1" y="0.5, 0.5" color="#000000"/>
 
-        <Export url="plot_{Method}_SvsB.pdf"/>
+        <Export url="plot_{Method}_SvsB{mod}.pdf"/>
+    </Plot>
+
+
+
+    <Plot>
+        <Histo name="{rejB}" >
+            <style draw="h" lw="2" lc="#000000" xr="0, 1.0" yr="0.0, 1.1" />
+        </Histo>
+        
+        
+        <TLine x="0, 1.0" y="0.1, 0.1" color="#000000"/>
+        <TLine x="0, 1.0" y="0.2, 0.2" color="#000000"/>
+        <TLine x="0, 1.0" y="0.3, 0.3" color="#000000"/>
+        <TLine x="0, 1.0" y="0.4, 0.4" color="#000000"/>
+        <TLine x="0, 1.0" y="0.5, 0.5" color="#000000"/>
+        <TLine x="0, 1.0" y="0.6, 0.6" color="#000000"/>
+        <TLine x="0, 1.0" y="0.7, 0.7" color="#000000"/>
+        <TLine x="0, 1.0" y="0.8, 0.8" color="#000000"/>
+        <TLine x="0, 1.0" y="0.9, 0.9" color="#000000"/>
+
+        <TLine y="0, 1.1" x="0.1, 0.1" color="#000000"/>
+        <TLine y="0, 1.1" x="0.2, 0.2" color="#000000"/>
+        <TLine y="0, 1.1" x="0.3, 0.3" color="#000000"/>
+        <TLine y="0, 1.1" x="0.4, 0.4" color="#000000"/>
+        <TLine y="0, 1.1" x="0.5, 0.5" color="#000000"/>
+        <TLine y="0, 1.1" x="0.6, 0.6" color="#000000"/>
+        <TLine y="0, 1.1" x="0.7, 0.7" color="#000000"/>
+        <TLine y="0, 1.1" x="0.8, 0.8" color="#000000"/>
+        <TLine y="0, 1.1" x="0.9, 0.9" color="#000000"/>
+
+        <Export url="plot_RejectBvsS{mod}.pdf"/>
     </Plot>
 
 </root>

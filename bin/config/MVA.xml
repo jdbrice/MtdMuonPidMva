@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<Task name="MVA" type="MVA" config="" nodePath="MVA" />
-
-	<Prepare cuts="McTracks_mPt<5.0" >
+	<mod></mod>
+	<Prepare cuts="MtdPidTraits_mBL!=7 && MtdPidTraits_mBL!=23" >
 		<opts>nTrain_Signal=0:nTrain_Background=0:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=NumEvents</opts>
 	</Prepare>
 
 	<Methods>
-		<Likelihood enable="true" opts="H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=500:VarTransform=I"/>
-		<MLP enable="false" opts="H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" />
+		<Likelihood enable="false" opts="H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=1000:VarTransform=I"/>
+		<MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5,N+5,N+5:TestRate=10:!UseRegulator" />
+		<BDT enable="true" opts="!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"/>
 	</Methods>
 
 	<MVA>
@@ -19,7 +20,7 @@
 		</input>
 
 		<output>
-			<TFile url="mva.root" />
+			<TFile url="mva{mod}.root" />
 		</output>
 	</MVA>
 </config>

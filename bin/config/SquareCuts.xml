@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Task name="SquareCuts tester" type="SquareCuts" config="" nodePath="SQR" />
+	<mod></mod>
+	
+    <t>1.0</t>
+
+    <CutRanges>
+        <DeltaY zero="0" min="-65" max="65" t="{t}"/>
+        <DeltaZ zero="0" min="-100" max="100" t="{t}"/>
+        <nSigmaPion zero="0" min="-6" max="6" t="{t}"/>
+        <nHitsFit zero="50" min="0" max="51" t="{t}"/>
+        <DCA zero="0" min="0" max="2" t="{t}" />
+    </CutRanges>
+
+	<SQR nEventLoops="100"> 
+        <EventLoop progress="true" />
+		<input>
+			<dst treeName="MvaDst" url="{mod}.root" />
+		</input>
+
+		<output>
+			<TFile url="sqr_{mod}_t{t}.root" />
+		</output>
+
+        <histograms>
+            <Histo name="TotalEvents" title="Total Events" bins_x="bins.events" />
+            <Histo name="PassEvents" title="Total Events" bins_x="bins.events" />
+        </histograms>
+	</SQR>
+
+    <bins>
+        <events width="1" min="0" max="105" />
+    </bins>
+</config>

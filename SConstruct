@@ -9,6 +9,8 @@ import platform
 SConscript('color_SConscript')
 Import( 'env' )
 
+SConscript( 'modules/MvaDstFormat/SConstruct' )
+
 env.Append(CPPPATH    = [ "modules/" ])
 env.Append(CXXFLAGS   = ['-std=c++11'])
 JDB_LIB = os.environ.get("JDB_LIB", "" )
@@ -34,4 +36,4 @@ env[ "_LIBFLAGS" ] = env[ "_LIBFLAGS" ] + " " + ROOTLIBS + " "
 if "Darwin" in platform.platform() :
 	env[ "LINKFLAGS" ].remove( "-pthread" )
 
-env.Program( target="bin/pico.app", source=[ "Engine.cpp"] )
+env.Program( target="bin/pico.app", source=[ "Engine.cpp", "modules/MvaDstFormat/DictionaryTrackHeap.cpp"] )

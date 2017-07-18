@@ -86,6 +86,12 @@ class SquareCuts : public TreeAnalyzer {
                 continue;
             if ( !cutRange_dZ.inInclusiveRange( th->MtdPidTraits_mDeltaZ ) )
                 continue;
+            if ( !cutRange_nSigmaPi.inInclusiveRange( th->Tracks_mNSigmaPion ) )
+                continue;
+            if ( !cutRange_nHitsFit.inInclusiveRange( th->Tracks_mNHitsFit ) )
+                continue;
+            if ( !cutRange_dca.inInclusiveRange( th->Tracks_mDCA ) )
+                continue;
 
             book->fill( "PassEvents", i );
         }

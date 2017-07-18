@@ -52,11 +52,6 @@ class SquareCuts : public TreeAnalyzer {
 
         LOG_F( INFO, "iEventLoop=%d", iEventLoop );
 
-        cutRange_dY.set_t( (iEventLoop / 100.0) );
-        cutRange_dZ.set_t( (iEventLoop / 100.0) );
-        cutRange_nSigmaPi.set_t( (iEventLoop / 100.0) );
-        cutRange_nHitsFit.set_t( (iEventLoop / 100.0) );
-        cutRange_dca.set_t( (iEventLoop / 100.0) );
 
         LOG_F( INFO, "DeltaY Range = %s", cutRange_dY.toString().c_str() );
         LOG_F( INFO, "DeltaZ Range = %s", cutRange_dZ.toString().c_str() );
@@ -70,16 +65,30 @@ class SquareCuts : public TreeAnalyzer {
         TrackHeap * th = tr.get();
         // LOG_F( INFO, "mPt=%f", th->Tracks_mPt );
 
-
-        book->fill( "TotalEvents", iEventLoop );
-
-        if ( !cutRange_dY.inInclusiveRange( th->MtdPidTraits_mDeltaY ) )
+        if ( th->McTracks_mPt > 5.0 )
             return;
-        if ( !cutRange_dZ.inInclusiveRange( th->MtdPidTraits_mDeltaZ ) )
+        if ( th->MtdPidTraits_mBL == 7 || th->MtdPidTraits_mBL == 23 )
             return;
 
-        book->fill( "PassEvents", iEventLoop );
 
+        for ( int i = 0; i < 101; i++ ){
+            book->fill( "TotalEvents", i );
+
+            cutRange_dY.set_t( (i / 100.0) );
+            cutRange_dZ.set_t( (i / 100.0) );
+            cutRange_nSigmaPi.set_t( (i / 100.0) );
+            cutRange_nHitsFit.set_t( (i / 100.0) );
+            cutRange_dca.set_t( (i / 100.0) );
+
+            
+
+            if ( !cutRange_dY.inInclusiveRange( th->MtdPidTraits_mDeltaY ) )
+                continue;
+            if ( !cutRange_dZ.inInclusiveRange( th->MtdPidTraits_mDeltaZ ) )
+                continue;
+
+            book->fill( "PassEvents", i );
+        }
     }
 
 };

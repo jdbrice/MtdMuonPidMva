@@ -13,14 +13,14 @@
         <DCA zero="0" min="0" max="2" t="{t}" />
     </CutRanges>
 
-	<SQR nEventLoops="100"> 
+	<SQR> 
         <EventLoop progress="true" />
 		<input>
 			<dst treeName="MvaDst" url="{mod}.root" />
 		</input>
 
 		<output>
-			<TFile url="sqr_{mod}_t{t}.root" />
+			<TFile url="sqr_{mod}.root" />
 		</output>
 
         <histograms>

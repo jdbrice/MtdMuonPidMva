@@ -11,7 +11,7 @@ using namespace jdb;
 
 
 #include "MVA/MVA.h"
-#include "MVA/SquareCuts.h"
+// #include "MVA/SquareCuts.h"
 
 #define LOGURU_IMPLEMENTATION 1
 #include "vendor/loguru.h"
@@ -27,7 +27,7 @@ int main( int argc, char* argv[] ) {
 	Logger::setGlobalLogLevel( "none" );
 
 	TaskFactory::registerTaskRunner<MVA>( "MVA" );
-	TaskFactory::registerTaskRunner<SquareCuts>( "SquareCuts" );
+	// TaskFactory::registerTaskRunner<SquareCuts>( "SquareCuts" );
 
 
 	TaskEngine engine( argc, argv );

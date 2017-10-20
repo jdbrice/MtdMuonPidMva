@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <mod></mod>
+    <Data name="signal" url="sqr_signal.root"/>
+    <Data name="bg" url="sqr_pion_bg.root"/>
+
+    <Method>Square Cuts</Method>
+    <TFile url="dSQR.root" />
+
+    <Transform>
+        <Scale save_as="normTotalS" name="signal/TotalEvents" factor="9.59533574062273686e-01" />
+        <Scale save_as="normPassS" name="signal/PassEvents" factor="9.59533574062273686e-01" />
+    </Transform>
+
+    <Transform>
+        <Divide save_as="effS" nameA="normPassS" nameB="normTotalS"/>
+        <Divide save_as="effB" nameA="bg/PassEvents" nameB="bg/TotalEvents"/>
+    </Transform>
+
+    <Transform>
+        <Add save_as="effSum" nameA="effS" nameB="effB"/>
+        <Divide save_as="PurityS" nameA="effS" nameB="effSum"/>
+    </Transform>
+
+    <Plot>
+        <Histo name="effS" style="style.TH1">
+            <style draw="h" lc="blue" title=";0=tight -> 100=loose;Pass / Total" />
+        </Histo>
+
+        <Histo name="effB" style="style.TH1">
+            <style draw="h same" lc="red" />
+        </Histo>
+
+        <Export url="plot_SQR_EffS_B.pdf"/>
+    </Plot>
+
+     <Plot>
+        <Histo name="PurityS" style="style.TH1">
+            <style draw="h" lc="blue" />
+        </Histo>
+
+        <Export url="plot_SQR_Purity.pdf"/>
+    </Plot>
+
+
+    <style>
+        <TH1 optstat="0" />
+    </style>
+
+</root>

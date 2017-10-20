@@ -71,16 +71,15 @@ class SquareCuts : public TreeAnalyzer {
             return;
 
 
-        for ( int i = 0; i < 101; i++ ){
+        for ( int i = 0; i <501; i++ ){
+            float t = i / 500.0;
             book->fill( "TotalEvents", i );
 
-            cutRange_dY.set_t( (i / 100.0) );
-            cutRange_dZ.set_t( (i / 100.0) );
-            cutRange_nSigmaPi.set_t( (i / 100.0) );
-            cutRange_nHitsFit.set_t( (i / 100.0) );
-            cutRange_dca.set_t( (i / 100.0) );
-
-            
+            cutRange_dY.set_t( t );
+            cutRange_dZ.set_t( t );
+            cutRange_nSigmaPi.set_t( t );
+            cutRange_nHitsFit.set_t( t );
+            cutRange_dca.set_t( t );
 
             if ( !cutRange_dY.inInclusiveRange( th->MtdPidTraits_mDeltaY ) )
                 continue;

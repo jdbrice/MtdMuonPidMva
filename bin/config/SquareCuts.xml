@@ -8,15 +8,15 @@
     <CutRanges>
         <DeltaY zero="0" min="-65" max="65" t="{t}"/>
         <DeltaZ zero="0" min="-100" max="100" t="{t}"/>
-        <nSigmaPion zero="0" min="-6" max="6" t="{t}"/>
-        <nHitsFit zero="50" min="0" max="51" t="{t}"/>
-        <DCA zero="0" min="0" max="2" t="{t}" />
+        <nSigmaPion zero="0" min="-6" max="6" t="1"/>
+        <nHitsFit zero="50" min="15" max="51" t="1.0"/>
+        <DCA zero="0" min="0" max="1" t="1.0" />
     </CutRanges>
 
 	<SQR> 
         <EventLoop progress="true" />
 		<input>
-			<dst treeName="MvaDst" url="{mod}.root" />
+			<dst treeName="MvaDst" url="{mod}.root" nEvents="200000" />
 		</input>
 
 		<output>
@@ -30,6 +30,6 @@
 	</SQR>
 
     <bins>
-        <events width="1" min="0" max="105" />
+        <events width="1" min="0" max="501" />
     </bins>
 </config>

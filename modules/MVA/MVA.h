@@ -14,14 +14,14 @@
 
 
 template <>
-const TString XmlConfig::get<TString>( string path ) const {
+TString XmlConfig::get<TString>( string path ) const {
 	// LOG_F( INFO, "Getting TString( %s ) = %s", path.c_str(), getString( path ).c_str() );
 	TString r( getString( path ) );
 	return r;
 }
 
 template <>
-const TString XmlConfig::get<TString>( string path, TString dv ) const {
+TString XmlConfig::get<TString>( string path, TString dv ) const {
 	if ( !exists( path ) )
 		return dv;
 	// LOG_F( INFO, "Getting TString( %s ) = %s", path.c_str(), getString( path ).c_str() );
@@ -82,6 +82,7 @@ protected:
 		factory->AddVariable( "BL := MtdPidTraits_mBL", "MTD BL", "", 'I' );
 		factory->AddVariable( "pT := Tracks_mPt", "p_{T}", "GeV/c", 'F' );
 		factory->AddVariable( "charge := Tracks_mCharge", "q", "", 'I' );
+		factory->AddVariable( "dTOF := MtdPidTraits_mDeltaTOF", "MTD DeltaTOF", "ns", 'F' );
 		
 
 		// factory->AddVariable( "dY := ((65.0+Tracks_mCharge*MtdPidTraits_mDeltaY) + 130 * (MtdPidTraits_mCell))", "MTD DeltaY", "cm", 'F' );
@@ -116,12 +117,12 @@ protected:
 
 		if ( config.getBool( "Methods.MLP:enable", true ) ){
 			LOG_F( INFO, "MLP(\"%s\") ", config.get<TString>( "Methods.MLP:opts" ).Data() );
-			factory->BookMethod( TMVA::Types::kMLP, "MLP", config.get<TString>( "Methods.MLP:opts" ) );
+			factory->BookMethod( TMVA::Types::kMLP, "MLP_" + config.getString( "mod" ), config.get<TString>( "Methods.MLP:opts" ) );
 		}
 
 		if ( config.getBool( "Methods.BDT:enable", true ) ){
 			LOG_F( INFO, "BDT(\"%s\") ", config.get<TString>( "Methods.BDT:opts" ).Data() );
-			factory->BookMethod( TMVA::Types::kBDT, "BDT", config.get<TString>( "Methods.BDT:opts" ) );
+			factory->BookMethod( TMVA::Types::kBDT, "BDT_" + config.getString( "mod" ), config.get<TString>( "Methods.BDT:opts" ) );
 		}
 
 		// Train MVAs using the set of training events

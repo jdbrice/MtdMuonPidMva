@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <mod></mod>
+
+     <Data name="BDT" url="mvaMPL_BDT_nTrain0.root" /> 
+    <Data name="sqr" url="sqr_rejBvsS.root" />
+    <Data name="MLP" url="mvaMLP_HL3_t50k.root" />
+    <Data name="LR" url="method_likelihood_avg.root" />
+
+    <Margins>0.01, 0.01, 0.12, 0.12</Margins>
+
+    <Plot>
+        <Histo name="MLP/Method_MLP/MLP/MVA_MLP_rejBvsS" style="TH1">
+            <style draw="h" lc="black" title="" />
+        </Histo>
+
+        <Histo name="sqr/hrejBvsS" style="TH1">
+            <style draw="h same" lc="#F000FF"/>
+        </Histo>
+
+        <Histo name="BDT/Method_BDT/BDT/MVA_BDT_rejBvsS" style="TH1">
+            <style draw="h same" lc="#0000FF"/>
+        </Histo>
+        
+        <Histo name="LR/Method_Likelihood/Likelihood/MVA_Likelihood_rejBvsS" style="TH1">
+            <style draw="h same" lc="#F00000"/>
+        </Histo>
+
+        <Legend>
+            <Position pos="bottom left" h="0.25" w="0.5"/>
+            <Entry name="sqr/hrejBvsS" title="1D Cuts" />
+            <Entry name="BDT/Method_BDT/BDT/MVA_BDT_rejBvsS" title="Boosted Decision Tree" />
+            <Entry name="MLP/Method_MLP/MLP/MVA_MLP_rejBvsS" title="Deep Neural Network (3HL,N+5)" />
+            <Entry name="LR/Method_Likelihood/Likelihood/MVA_Likelihood_rejBvsS" title="1D Likelihood Ratios" />
+        </Legend>
+
+        <Export url="plot_compare_rejBvsS.pdf" />
+    </Plot>
+
+    <TH1 optstat="0" lw="2"/>
+</root>

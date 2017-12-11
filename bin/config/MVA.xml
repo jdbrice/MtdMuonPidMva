@@ -2,14 +2,14 @@
 <config>
 	<Task name="MVA" type="MVA" config="" nodePath="MVA" />
 	<mod></mod>
-	<Prepare cuts="Tracks_mPt < 2.0" >
+	<Prepare cuts="" >
 		<opts>nTrain_Signal=100000:nTrain_Background=100000:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=NumEvents</opts>
 	</Prepare>
 
 	<Methods>
 		<Likelihood enable="false" opts="H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=1000:VarTransform=I"/>
 		<!-- <MLP enable="false" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5,N+5,N+5:TestRate=10:!UseRegulator" /> -->
-		<MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N-5,N-5,N-5,N-5,N-5:TestRate=10:!UseRegulator" />
+		<MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N,N-1:TestRate=10:!UseRegulator" />
 		<!-- <MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:TestRate=10:!UseRegulator"/> -->
 		<BDT enable="false" opts="!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=5:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"/>
 	</Methods>

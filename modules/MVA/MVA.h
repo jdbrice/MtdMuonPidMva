@@ -72,7 +72,7 @@ protected:
 		// factory->AddVariable( "dca := Tracks_mDCA", "DCA", "cm", 'F' );
 
 		// MLP
-		factory->AddVariable( "dY := (MtdPidTraits_mDeltaY)", "MTD DeltaY", "cm", 'F' );
+		factory->AddVariable( "qdY := (MtdPidTraits_mDeltaY * Tracks_mCharge)", "MTD DeltaY", "cm", 'F' );
 		factory->AddVariable( "dZ := MtdPidTraits_mDeltaZ", "MTD DeltaZ", "cm", 'F' );
 		factory->AddVariable( "nSigmaPi := Tracks_mNSigmaPion", "n #sigma #pi", "", 'F');
 		factory->AddVariable( "nh := Tracks_mNHitsFit", "N Hits Fit", "", 'I' );

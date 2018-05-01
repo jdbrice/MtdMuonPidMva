@@ -2,27 +2,47 @@
 <config>
 	<Task name="MVA" type="MVA" config="" nodePath="MVA" />
 	<mod></mod>
-	<Prepare cuts="" >
-		<opts>nTrain_Signal=100000:nTrain_Background=100000:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=NumEvents</opts>
+
+	<!-- BDTs -->
+	<NTrees>250</NTrees>
+	<MaxDepth>5</MaxDepth>
+
+	<!-- MLP -->
+	<NCycles>500</NCycles>
+
+	<minPt>1.50</minPt>
+	<maxPt>1.60</maxPt>
+	<Prepare cuts="Tracks_mPt > {minPt} && Tracks_mPt <= {maxPt}" >
+		<opts>nTrain_Signal=0:nTrain_Background=0:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=NumEvents</opts>
 	</Prepare>
 
+	<vars>
+		dY,
+		dZ,
+		nSigmaPi,
+		dca,
+		Cell,
+		dTOF
+	</vars>
+
 	<Methods>
-		<Likelihood enable="false" opts="H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=1000:VarTransform=I"/>
+		<Likelihood enable="false" opts="H:!V:TransformOutput:PDFInterpol=Spline2:NAvEvtPerBin=100:VarTransform=I"/>
 		<!-- <MLP enable="false" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5,N+5,N+5:TestRate=10:!UseRegulator" /> -->
-		<MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N,N-1:TestRate=10:!UseRegulator" />
+		<MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles={NCycles}:HiddenLayers=N+10,N+12:TestRate=100" />
+		<!-- <MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=6,3,3,3,3,3,3:TestRate=10:!UseRegulator" /> -->
 		<!-- <MLP enable="true" opts="H:V:NeuronType=tanh:VarTransform=N:NCycles=600:TestRate=10:!UseRegulator"/> -->
-		<BDT enable="false" opts="!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=5:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"/>
+		<BDT enable="true" opts="!H:!V:NTrees={NTrees}:MinNodeSize=2.5%:MaxDepth={MaxDepth}:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"/>
 	</Methods>
 
 	<MVA>
 		
 		<input>
-			<TFile url="signal.root" name="signal"/>
-			<TFile url="pion_bg.root" name="pion_bg"/>
+			<TFile url="/macstar/star2/jdb12/work/dimuonAna/FemtoDst2MvaDst/bin/MvaDst_muons.root" name="signal"/>
+			<TFile url="/macstar/star2/jdb12/work/dimuonAna/FemtoDst2MvaDst/bin/MvaDst_pions.root" name="pion_bg"/>
 		</input>
 
 		<output>
-			<TFile url="mva_{mod}.root" />
+			<TFile url="mva_{mod}_{minPt}_to_{maxPt}.root" />
 		</output>
 	</MVA>
 </config>

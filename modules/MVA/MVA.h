@@ -5,6 +5,7 @@
 #include "HistoAnalyzer.h"
 #include "XmlRange.h"
 
+#include "TMVA/Config.h"
 #include "TMVA/Factory.h"
 #include "TMVA/Tools.h"
 
@@ -71,18 +72,32 @@ protected:
 		// factory->AddVariable( "nh := Tracks_mNHitsFit", "N Hits Fit", "", 'I' );
 		// factory->AddVariable( "dca := Tracks_mDCA", "DCA", "cm", 'F' );
 
+
+		vector<string> active_vars = config.getStringVector( "vars" );
+		LOG_F( INFO, "active variables = [%s]", vts( active_vars ).c_str() );
+
 		// MLP
-		factory->AddVariable( "qdY := (MtdPidTraits_mDeltaY * Tracks_mCharge)", "MTD DeltaY", "cm", 'F' );
-		factory->AddVariable( "dZ := MtdPidTraits_mDeltaZ", "MTD DeltaZ", "cm", 'F' );
-		factory->AddVariable( "nSigmaPi := Tracks_mNSigmaPion", "n #sigma #pi", "", 'F');
-		factory->AddVariable( "nh := Tracks_mNHitsFit", "N Hits Fit", "", 'I' );
-		factory->AddVariable( "dca := Tracks_mDCA", "DCA", "cm", 'F' );
-		factory->AddVariable( "Cell := MtdPidTraits_mCell", "MTD Cell", "", 'I' );
-		factory->AddVariable( "Module := MtdPidTraits_mModule", "MTD Module", "", 'I' );
-		factory->AddVariable( "BL := MtdPidTraits_mBL", "MTD BL", "", 'I' );
-		factory->AddVariable( "pT := Tracks_mPt", "p_{T}", "GeV/c", 'F' );
-		factory->AddVariable( "charge := Tracks_mCharge", "q", "", 'I' );
-		factory->AddVariable( "dTOF := MtdPidTraits_mDeltaTOF", "MTD DeltaTOF", "ns", 'F' );
+		if ( find( active_vars.begin(), active_vars.end(), "dY" ) != active_vars.end() )
+			factory->AddVariable( "dY := (MtdPidTraits_mDeltaY * Tracks_mCharge)", "MTD DeltaY", "cm", 'F' );
+		if ( find( active_vars.begin(), active_vars.end(), "dZ" ) != active_vars.end() )
+			factory->AddVariable( "dZ := MtdPidTraits_mDeltaZ", "MTD DeltaZ", "cm", 'F' );
+		if ( find( active_vars.begin(), active_vars.end(), "nSigmaPi" ) != active_vars.end() )
+			factory->AddVariable( "nSigmaPi := Tracks_mNSigmaPion", "n #sigma #pi", "", 'F');
+		// factory->AddVariable( "nh := Tracks_mNHitsFit", "N Hits Fit", "", 'I' );
+		if ( find( active_vars.begin(), active_vars.end(), "dca" ) != active_vars.end() )
+			factory->AddVariable( "dca := Tracks_mDCA", "DCA", "cm", 'F' );
+		if ( find( active_vars.begin(), active_vars.end(), "Cell" ) != active_vars.end() )
+			factory->AddVariable( "Cell := ((MtdPidTraits_mCell+1) * Tracks_mCharge)", "MTD Cell", "", 'I' );
+		if ( find( active_vars.begin(), active_vars.end(), "Module" ) != active_vars.end() )
+			factory->AddVariable( "Module := MtdPidTraits_mModule", "MTD Module", "", 'I' );
+		if ( find( active_vars.begin(), active_vars.end(), "BL" ) != active_vars.end() )
+			factory->AddVariable( "BL := MtdPidTraits_mBL", "MTD BL", "", 'I' );
+		if ( find( active_vars.begin(), active_vars.end(), "pT" ) != active_vars.end() )
+			factory->AddVariable( "pT := Tracks_mPt", "p_{T}", "GeV/c", 'F' );
+		if ( find( active_vars.begin(), active_vars.end(), "charge" ) != active_vars.end() )
+			factory->AddVariable( "charge := Tracks_mCharge", "q", "", 'I' );
+		if ( find( active_vars.begin(), active_vars.end(), "dTOF" ) != active_vars.end() )
+			factory->AddVariable( "dTOF := MtdPidTraits_mDeltaTOF", "MTD DeltaTOF", "ns", 'F' );
 		
 
 		// factory->AddVariable( "dY := ((65.0+Tracks_mCharge*MtdPidTraits_mDeltaY) + 130 * (MtdPidTraits_mCell))", "MTD DeltaY", "cm", 'F' );
@@ -95,12 +110,15 @@ protected:
 		// factory->AddVariable( "BL := MtdPidTraits_mBL", "MTD BL", "", 'I' );
 		
 
+		(TMVA::gConfig().GetVariablePlotting()).fNbins1D = 300.0;
 
 		Double_t signalWeight     = 1.0;
    		Double_t backgroundWeight = 1.0;
 		
 		factory->AddSignalTree    ( signal_tree,     signalWeight     );
    		factory->AddBackgroundTree( pion_bg_tree, backgroundWeight );
+
+   		LOG_F( INFO, "CUTS: %s", config.getString( "Prepare:cuts" ).c_str()  );
 
 
 		TCut precuts = TCut( config.get<TString>( "Prepare:cuts", "" ) );

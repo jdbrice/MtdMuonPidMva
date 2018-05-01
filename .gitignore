@@ -48,3 +48,9 @@ modules/PicoDstP16id/DictionaryPicoDstP16id\.h
 
 *.vscode
 *.pdf
+bin/weights/
+bin/mva_N6_SvB.tar.gz
+bin/run_bdt_set.sh
+bin/run_pt_set.sh
+bin/nomodSvB.xml
+
